@@ -1,4 +1,4 @@
-from pydantic import SecretStr
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
 
     max_upload_size_bytes: int = 5 * 1024 * 1024
+
+    posts_per_page: int = Field(default=10, ge=1, le=100)
 
 
 settings = Settings()  # type: ignore[call-arg] # Loaded from .env file
