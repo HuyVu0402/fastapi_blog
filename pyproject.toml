@@ -19,3 +19,13 @@ dependencies = [
     "pyjwt>=2.15.1",
     "sqlalchemy>=2.1.1",
 ]
+
+[dependency-groups]
+dev = [
+    "moto[s3]>=5.1.22",
+    "pytest>=9.0.3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

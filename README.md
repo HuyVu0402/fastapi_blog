@@ -72,3 +72,27 @@ khi bật bucket; ứng dụng không tự di chuyển ảnh cũ. Chuyển ngư�
 
 Part 16 tích hợp từ
 [CoreyMSchafer/FastAPI-16-AWS-S3-Image-Uploads](https://github.com/CoreyMSchafer/FastAPI-16-AWS-S3-Image-Uploads/commit/e79a99bfe2f77fcea423cf5df34be9db1eb8d5ed).
+
+## Kiểm thử (part 17)
+
+```bash
+uv sync --locked
+uv run pytest -q
+```
+
+`pytest` và `moto[s3]` thuộc nhóm dependency `dev`. Bộ test giữ 12 bài từ
+tutorial và bổ sung kiểm tra phân trang, token hết hạn/dùng lại, đổi mật khẩu,
+phân quyền ảnh, lỗi storage, rollback upload và chế độ lưu ảnh local.
+
+Mỗi test có SQLite tạm riêng và session mới cho từng request. S3 dùng Moto,
+email được mock, ảnh local chỉ ghi vào thư mục tạm. Không cần PostgreSQL,
+AWS hay SMTP thật; không dùng hoặc xóa bảng trong `blog.db`. Bộ test này
+không thay thế việc kiểm thử tích hợp với PostgreSQL và AWS thực tế.
+
+```bash
+uv run pytest tests/test_users.py -q
+uv run pytest tests/test_regressions.py -q
+```
+
+Part 17 tích hợp từ
+[CoreyMSchafer/FastAPI-17-Testing](https://github.com/CoreyMSchafer/FastAPI-17-Testing/commit/f8e78e674574e6b1a69a135dfc84ae929b55bc36).
