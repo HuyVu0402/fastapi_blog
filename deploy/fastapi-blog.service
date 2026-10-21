@@ -1,0 +1,23 @@
+[Unit]
+Description=FastAPI Blog
+Wants=network-online.target
+After=network-online.target postgresql.service
+
+[Service]
+Type=simple
+User=blog
+Group=blog
+WorkingDirectory=/srv/fastapi-blog
+Environment=PYTHONUNBUFFERED=1
+Environment=UV_NO_PROGRESS=1
+# uv is installed for the blog user. Settings reads .env from WorkingDirectory.
+ExecStart=/home/blog/.local/bin/uv run --locked --no-sync --no-dev fastapi run main.py --host 127.0.0.1 --port 8000 --workers 1 --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

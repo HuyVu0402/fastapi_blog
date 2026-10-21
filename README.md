@@ -96,3 +96,10 @@ uv run pytest tests/test_regressions.py -q
 
 Part 17 tích hợp từ
 [CoreyMSchafer/FastAPI-17-Testing](https://github.com/CoreyMSchafer/FastAPI-17-Testing/commit/f8e78e674574e6b1a69a135dfc84ae929b55bc36).
+
+## Triển khai VPS (part 18)
+
+Xem [hướng dẫn VPS](docs/deployment-vps.md) và hai mẫu trong `deploy/` cho
+systemd chạy bằng uv, Nginx và HTTPS. Endpoint `/health` kiểm tra kết nối database:
+HTTP 200 khi hoạt động, HTTP 503 khi database không sẵn sàng; cả hai trả JSON.
+Part này không thêm dependency Python.
