@@ -8,6 +8,8 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
     )
 
+    database_url: str = "sqlite+aiosqlite:///./blog.db"
+
     secret_key: SecretStr
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
@@ -15,7 +17,6 @@ class Settings(BaseSettings):
     max_upload_size_bytes: int = 5 * 1024 * 1024
 
     posts_per_page: int = Field(default=10, ge=1, le=100)
-
 
     reset_token_expire_minutes: int = 60
 
