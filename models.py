@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from config import settings
 from database import Base
 
 
@@ -34,6 +35,14 @@ class User(Base):
     @property
     def image_path(self) -> str:
         if self.image_file:
+            if settings.s3_bucket_name:
+                if settings.s3_public_url:
+                    base_url = settings.s3_public_url.rstrip("/")
+                elif settings.s3_endpoint_url:
+                    base_url = f"{settings.s3_endpoint_url.rstrip('/')}/{settings.s3_bucket_name}"
+                else:
+                    base_url = f"https://{settings.s3_bucket_name}.s3.{settings.s3_region}.amazonaws.com"
+                return f"{base_url}/profile_pics/{self.image_file}"
             return f"/media/profile_pics/{self.image_file}"
         return "/static/profile_pics/default.jpg"
 

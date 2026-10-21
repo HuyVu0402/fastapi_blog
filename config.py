@@ -14,6 +14,14 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
 
+    # Omit the bucket to keep storing profile pictures locally.
+    s3_bucket_name: str | None = None
+    s3_region: str = "us-east-1"
+    s3_access_key_id: SecretStr | None = None
+    s3_secret_access_key: SecretStr | None = None
+    s3_endpoint_url: str | None = None
+    s3_public_url: str | None = None
+
     max_upload_size_bytes: int = 5 * 1024 * 1024
 
     posts_per_page: int = Field(default=10, ge=1, le=100)

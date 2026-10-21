@@ -45,3 +45,30 @@ Không commit `.env`, database hoặc bản sao lưu.
 
 Part 15 tích hợp từ
 [CoreyMSchafer/FastAPI-15-Postgres-Alembic](https://github.com/CoreyMSchafer/FastAPI-15-Postgres-Alembic/commit/891ad80d6cf0b2cb6a30c83f0e2a2e449f97754d).
+
+## Ảnh đại diện trên S3 (part 16)
+
+Không đặt `S3_BUCKET_NAME`: ảnh tiếp tục được lưu trong `media/profile_pics`.
+Để dùng S3, cấu hình `S3_BUCKET_NAME` và `S3_REGION` trong `.env`.
+Ứng dụng dùng AWS credential chain mặc định (ví dụ IAM role hoặc AWS profile),
+hoặc hai biến `S3_ACCESS_KEY_ID` và `S3_SECRET_ACCESS_KEY` nếu được cung cấp.
+
+Ảnh được chuyển thành JPEG 300×300, upload vào `profile_pics/<uuid>.jpg` và
+xóa khi thay ảnh, xóa ảnh hoặc xóa tài khoản. Boto3 chạy trong threadpool.
+Nếu upload thất bại, ảnh đang dùng không bị thay đổi. Lỗi dọn ảnh sau khi lưu
+database được ghi log để xử lý, không khiến thao tác đã lưu báo thất bại.
+
+Hai file `docs/aws_iam_policy.json` và `docs/aws_bucket_policy.json` là mẫu:
+thay `YOUR_BUCKET_NAME` bằng tên bucket thực tế. IAM cần quyền ghi/xóa ảnh;
+bucket policy mẫu cho phép đọc công khai riêng prefix `profile_pics/`, như bài học.
+Bucket phải cho phép chính sách đọc đó, hoặc cấu hình CDN để phục vụ ảnh.
+Ứng dụng hiện trả URL công khai, không tạo presigned URL cho bucket private.
+
+`S3_ENDPOINT_URL` dùng cho dịch vụ tương thích S3; `S3_PUBLIC_URL` là URL gốc
+của bucket/CDN phục vụ ảnh (không kèm `/profile_pics`). Khi chuyển local sang S3,
+cần chuyển ảnh hiện hữu sang prefix `profile_pics/` với nguyên tên file trước
+khi bật bucket; ứng dụng không tự di chuyển ảnh cũ. Chuyển ngược lại cũng cần
+đồng bộ ảnh về local.
+
+Part 16 tích hợp từ
+[CoreyMSchafer/FastAPI-16-AWS-S3-Image-Uploads](https://github.com/CoreyMSchafer/FastAPI-16-AWS-S3-Image-Uploads/commit/e79a99bfe2f77fcea423cf5df34be9db1eb8d5ed).
