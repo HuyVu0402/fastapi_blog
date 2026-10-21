@@ -103,3 +103,12 @@ Xem [hướng dẫn VPS](docs/deployment-vps.md) và hai mẫu trong `deploy/` c
 systemd chạy bằng uv, Nginx và HTTPS. Endpoint `/health` kiểm tra kết nối database:
 HTTP 200 khi hoạt động, HTTP 503 khi database không sẵn sàng; cả hai trả JSON.
 Part này không thêm dependency Python.
+
+## Docker và Cloud Run (part 19)
+
+Xem [hướng dẫn Docker/Cloud Run](docs/deployment-cloud-run.md). Dockerfile dùng
+uv, chạy non-root, đọc `PORT` và giữ credentials bên ngoài image. Ứng dụng bổ sung
+security headers và giữ chính sách referrer riêng cho trang reset mật khẩu.
+
+Part này đã kiểm tra code/cấu hình và test Python, **chưa build/chạy Docker hoặc
+triển khai Cloud Run**. Không thêm dependency Python.
